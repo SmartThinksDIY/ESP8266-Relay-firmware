@@ -1,3 +1,7 @@
+// Script for ESP8266 for control Relay by api requests
+// To work check go to http://ip_of_esp
+// 
+
 #include "ESP8266WiFi.h"
 #include "ESP8266WebServer.h"
 
@@ -15,23 +19,11 @@ void setup() {
   pinMode(RELAY_PIN, OUTPUT);
   update_relay();  // Turn off, becouse STATE = false
 
-  Serial.begin(9600);
   WiFi.begin(ssid, password);
 
   while (--tries && WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
   }
-
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Non Connecting to WiFi..");
-  } else {
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
-  }
-
 
   server.on("/set", set);
   server.on("/get", get);
@@ -41,7 +33,6 @@ void setup() {
   server.onNotFound(handleNotFound);
 
   server.begin();
-  Serial.println("Server listening");
 }
 
 void loop() {
